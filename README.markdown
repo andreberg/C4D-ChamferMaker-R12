@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-**AMa_Chamfer_Maker** is a generator plugin that allows you to add  
+**AMa_ChamferMaker** is a generator plugin that allows you to add  
 bevelled edges to any 3D object, procedural or polygonal, while  
 keeping the object manager tree fully procedural. This means, you  
 can get nice accentuated edges that will make your renders look  
@@ -27,7 +27,7 @@ on the web for R12.
 Basic Usage
 -----------
 
-Go to the _Plugins_ menu, choose *AMa_Chamfer_Maker*.  
+Go to the _Plugins_ menu, choose *AMa_ChamferMaker*.  
 This will instantiate the generator object in the Object Manager.  
 
 From hereon you can put the model objects you want bevelled under the  
