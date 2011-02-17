@@ -52,10 +52,8 @@ Copyright 2011, André Berg
 License
 -------
 
-The source code was made available in 2006 when a maintainer  
-took over the port for English speaking countries. There is no  
-license notice with the source, so that I am putting it under  
-the following license:
+Since I couldn't find a license notice with the source I downloaded,  
+I am putting it under the following license:
 
 Licensed under the Apache License, Version 2.0 (the "License");  
 you may not use this file except in compliance with the License.  
