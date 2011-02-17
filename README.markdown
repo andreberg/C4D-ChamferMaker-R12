@@ -46,7 +46,7 @@ Updated from the 2006 source code by yours truly.
 Copyright
 ---------
 
-Copyright 2006, Antosha Marchenko
+Copyright 2006, Antosha Marchenko  
 Copyright 2011, André Berg
 
 License
