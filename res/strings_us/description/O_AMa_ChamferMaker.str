@@ -1,0 +1,56 @@
+STRINGTABLE O_AMa_ChamferMaker
+{
+O_AMa_ChamferMaker "Chamfer Maker by Antosha Marchenko";
+
+AMa_CHMMKR_ALL_CHILDREN		"Affect All Children";
+AMa_CHMMKR_SEL_MODE			"Process";
+	AMa_CHMMKR_SELMO_LIVE	"Edges from Live Selection";
+	AMa_CHMMKR_SELMO_NSSET	"Edges from N-th Sel.Set";
+	AMa_CHMMKR_SELMO_CHOOSE	"Choosen Selection Sets";
+	AMa_CHMMKR_SELMO_OPEN	"Open Edges";
+	AMa_CHMMKR_SELMO_THRESH	"Edges with Thresh. Angle";
+	AMa_CHMMKR_SELMO_PHO	"Phong Breaks";
+	AMa_CHMMKR_SELMO_ALL	"All Edges";
+AMa_CHMMKR_N_TH_SS			"Which Edge S.S. on Object";
+AMa_CHMMKR_SELECT_THRESH	"Threshold";
+AMa_CHMMKR_AND_OPEN_EDG		"And Open Edges";
+AMa_CHMMKR_RAD_a			"Radius";
+AMa_CHMMKR_RAD_p			"Radius";
+AMa_CHMMKR_RAD_c			"Radius";
+AMa_CHMMKR_RAD_PERC			"Radius Percents";
+AMa_CHMMKR_SUBDIVISION		"Subdivision";
+AMa_CHMMKR_CREATENGONS		"Create N-gons";
+AMa_CHMMKR_VARIANCE			"Inner Variance" "Var.";
+AMa_CHMMKR_PATH				"Path";
+AMa_CHMMKR_PATH_Y_MIN_TXT	"";
+AMa_CHMMKR_PATH_Y_MAX_TXT	"";
+AMa_CHMMKR_EXTRUSION		"Extrusion";
+AMa_CHMMKR_EXTRU_VARI		"Extrusion Variance" "Var.";
+AMa_CHMMKR_CLOSE_FANS		"Close Fans";
+AMa_CHMMKR_PROL_OUTL		"Prolong Outlines";
+AMa_CHMMKR_CONNECT_OUTL		"Connect Outlines";
+AMa_CHMMKR_CONN_THRESH		"Threshold";
+AMa_CHMMKR_SHAPE_MODE		"Type          ";
+	AMa_CHMMKR_MODE_LINEAR	"Linear";
+	AMa_CHMMKR_MODE_CONVEX	"Convex";
+	AMa_CHMMKR_MODE_CONCAVE	"Concave";
+	AMa_CHMMKR_MODE_BEZIER	"Bezier";
+	AMa_CHMMKR_MODE_USER	"User";
+	AMa_CHMMKR_MODE_AMaPARAL "AMa Parallel";
+	AMa_CHMMKR_MODE_COMPO	"Composite";
+AMa_CHMMKR_COMP_CLO_F	"Close Fans";
+AMa_CHMMKR_COMP_PR_O	"Prolong Outlines";
+AMa_CHMMKR_COMP_CONN	"Connect Outlines";
+AMa_CHMMKR_COMP_CO_THR	"Threshold";
+AMa_CHMMKR_COMP_SEC_MO	"Inner Type";
+AMa_CHMMKR_WELD		"Weld to Orig. Points";
+AMa_CHMMKR_HN_WHAT	"Use HyperNURBS Tag";
+AMa_CHMMKR_HN_OFF	 "Don`t Use";
+AMa_CHMMKR_HN_E_ONLY "Edges only";
+AMa_CHMMKR_HN_P_ONLY "Points only";
+AMa_CHMMKR_HN_BOTH	 "Edges & Points Multiply";
+AMa_CHMMKR_HN_PRIORITY	"Priority among Edges";
+AMa_CHMMKR_HN_BIG	"Bigger Weight";
+AMa_CHMMKR_HN_LOW	"Smaller Weight";
+AMa_CHMMKR_HN_RESET		"Don`t Pass HN Tag";
+}
