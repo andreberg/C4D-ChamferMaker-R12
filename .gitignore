@@ -60,4 +60,5 @@ coverage/
 ######## PROJECT SPECIFIC IGNORES ##########
 
 *.cdl*
+*.dylib
 scenes/
