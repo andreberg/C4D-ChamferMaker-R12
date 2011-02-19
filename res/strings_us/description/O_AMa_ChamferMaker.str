@@ -45,12 +45,12 @@ AMa_CHMMKR_COMP_CO_THR	"Threshold";
 AMa_CHMMKR_COMP_SEC_MO	"Inner Type";
 AMa_CHMMKR_WELD		"Weld to Orig. Points";
 AMa_CHMMKR_HN_WHAT	"Use HyperNURBS Tag";
-AMa_CHMMKR_HN_OFF	 "Don`t Use";
+AMa_CHMMKR_HN_OFF	 "Don't Use";
 AMa_CHMMKR_HN_E_ONLY "Edges only";
 AMa_CHMMKR_HN_P_ONLY "Points only";
 AMa_CHMMKR_HN_BOTH	 "Edges & Points Multiply";
 AMa_CHMMKR_HN_PRIORITY	"Priority among Edges";
 AMa_CHMMKR_HN_BIG	"Bigger Weight";
 AMa_CHMMKR_HN_LOW	"Smaller Weight";
-AMa_CHMMKR_HN_RESET		"Don`t Pass HN Tag";
+AMa_CHMMKR_HN_RESET		"Don't Pass HN Tag";
 }
