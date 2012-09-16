@@ -10,48 +10,7 @@
 #include <string.h>
 
 // forward declarations
-/*Bool RegisterSN();
-Bool RegisterGradient(void);
-Bool RegisterBitmap(void);
-Bool RegisterMandelbrot(void);
-Bool RegisterSimpleMaterial(void);
-Bool RegisterParticleVolume(void);
-Bool RegisterMenuTest(void);
-Bool RegisterAsyncTest(void);
-Bool RegisterActiveObjectDlg();
-Bool RegisterListView(void);
-Bool RegisterSubDialog(void);
-
-Bool RegisterRoundedTube(void);
-
-Bool RegisterVPTest(void);
-Bool RegisterVPInvertImage(void);
-Bool RegisterBlinker(void);
-
-Bool RegisterCircle(void);
-Bool RegisterSTL(void);
-Bool RegisterBFF(void);
-Bool RegisterLookAtCamera(void);
-Bool RegisterGravitation(void);
-Bool RegisterThreshold(void);
-Bool RegisterSampleMatrix(void);
-Bool RegisterPrimitiveTool(void);
-Bool RegisterMorphMixer(void);
-/*Bool RegisterVPVisualizeNormals(void);
-Bool RegisterVPReconstruct(void);
-Bool RegisterExampleDataType(void);
-void FreeTriangulate(void);
-//Bool RegisterMemoryStat(void);
-Bool RegisterEdgeCutTool();*/
-//Bool RegisterReverseNormals();
-//Bool RegisterAtomObject(void);
 Bool Register_AMa_Deformer(void);
-//Bool RegisterTriangulate(void);
-/*Bool RegisterLayerShaderBrowser();
-Bool RegisterPainterSaveTest();
-Bool RegisterRandomFalloff();
-Bool RegisterNoiseEffector();
-Bool RegisterDropEffector();*/
 
 C4D_CrashHandler old_handler;
 
@@ -68,7 +27,7 @@ void EnhanceMainMenu(void)
 {
 	// do this only if necessary - otherwise the user will end up with dozens of menus!
 
-	if ((bool)GeGetVersionType() < 0) // only if C4D is loaded
+	if ((Bool)GeGetVersionType() < 0) // only if C4D is loaded
 		return;
 
 	BaseContainer *bc = GetMenuResource(String("M_EDITOR"));
@@ -105,67 +64,9 @@ Bool PluginStart(void)
 		GeConsoleOut("COMMANDLINE number of arguments: "+LongToString(args.argc)); 
 	}
 
-	// shader plugins
-	/*if (!RegisterGradient()) return FALSE;
-	if (!RegisterBitmap()) return FALSE;
-	if (!RegisterMandelbrot()) return FALSE;
-	if (!RegisterSimpleMaterial()) return FALSE;
-	if (!RegisterParticleVolume()) return FALSE;
-
-	// menu plugins
-	if (!RegisterMenuTest()) return FALSE;
-	if (!RegisterAsyncTest()) return FALSE;
-	if (!RegisterActiveObjectDlg()) return FALSE;
-	if (!RegisterListView()) return FALSE;
-	if (!RegisterSubDialog()) return FALSE;
-	if (!RegisterLayerShaderBrowser()) return FALSE;
-
-	// filter plugins
-	if (!RegisterSTL()) return FALSE;
-	if (!RegisterBFF()) return FALSE;
-
-	// object plugins
-	
-	if (!RegisterRoundedTube()) return FALSE;
-	//if (!RegisterGravitation()) return FALSE;
-	
-	if (!RegisterCircle()) return FALSE;
-	
-	if (!RegisterMorphMixer()) return FALSE;
 
 	// tool plugins
-	if (!RegisterPrimitiveTool()) return FALSE;
-	if (!RegisterEdgeCutTool()) return FALSE;*/
-	//if (!RegisterReverseNormals()) return FALSE;
-	//if (!RegisterTriangulate()) return FALSE;
-	//if (!RegisterAtomObject()) return FALSE;
 	if (!Register_AMa_Deformer()) return FALSE;
-
-	// animation plugins
-	/*if (!RegisterBlinker()) return FALSE;
-
-	// tag / expression plugins
-	if (!RegisterLookAtCamera()) return FALSE;
-
-	// bitmap filter
-	if (!RegisterThreshold()) return FALSE;
-	if (!RegisterSampleMatrix()) return FALSE;
-
-	// video post filter
-	if (!RegisterVPTest()) return FALSE;
-	if (!RegisterVPInvertImage()) return FALSE;
-	if (!RegisterVPVisualizeNormals()) return FALSE;
-	if (!RegisterVPReconstruct()) return FALSE;
-
-	if (!RegisterMemoryStat()) return FALSE;
-	if (!RegisterPainterSaveTest()) return FALSE;
-
-	// falloff types
-	if (!RegisterRandomFalloff()) return FALSE;
-
-	// effector plugins, can only be loaded if MoGfx is installed
-	RegisterNoiseEffector();
-	RegisterDropEffector();*/
 
 	return TRUE;
 }
@@ -182,14 +83,12 @@ Bool PluginMessage(LONG id, void *data)
 	{
 		case C4DPL_INIT_SYS:
 			if (!resource.Init()) return FALSE; // don't start plugin without resource
-			//if (!RegisterExampleDataType()) return FALSE;
 			return TRUE;
 
 		case C4DMSG_PRIORITY: 
 			return TRUE;
 
 		case C4DPL_BUILDMENU:
-			//EnhanceMainMenu(); 	
 			break;
 			
 		case C4DPL_COMMANDLINEARGS:

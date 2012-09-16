@@ -19,9 +19,24 @@ Compile and install to CINEMA 4D's plugin folder
 
 If you do not want to compile the plugin, you can find  
 a pre-compiled binary distribution in the downloads  
-section. The binary distribution also contains the  
-pre-compiled Windows plugins that are floating around  
-on the web for R12.
+section. 
+
+Supported Versions
+------------------
+
+The current version, named `AMa_Chamfer_Maker-R14.zip` is for R14,  
+but you can also find the previous version for R12/R13 in the downloads  
+section named `AMa_Chamfer_Maker.zip`.
+
+Development
+-----------
+
+If you want to use the included Xcode 4/VisualStudio 2012 projects  
+it is crucial to put the downloaded source folder inside CINEMA 4D's  
+plugin directory, under the main installation path (as opposed to   
+the plugin folder found in user prefs). This is because all paths  
+relevant to the compiler/linker are set up relative to the main  
+plugin folder.
 
 
 Basic Usage
@@ -47,7 +62,7 @@ Copyright
 ---------
 
 Copyright 2006, Antosha Marchenko  
-Copyright 2011, André Berg
+Copyright 2011, 2012, André Berg
 
 License
 -------

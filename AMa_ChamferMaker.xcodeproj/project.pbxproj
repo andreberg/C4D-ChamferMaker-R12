@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -150,8 +150,11 @@
 /* Begin PBXProject section */
 		65E5168A083D10D0005BFD9A /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 65450B6A085517D90099394F /* Build configuration list for PBXProject "AMa_ChamferMaker" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -253,9 +256,12 @@
 			baseConfigurationReference = 6553A1DA0926F00F0034739A /* _api_debug.xcconfig */;
 			buildSettings = {
 				C4D_ROOTDIR = ../..;
-				OTHER_LDFLAGS = "$(C4D_ROOTDIR)/resource/_api_lib/lib_api_debug.a";
-				PREBINDING = NO;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"$(C4D_ROOTDIR)/resource/_api_lib/lib_api_debug.a",
+				);
 				PRODUCT_NAME = AMa_ChamferMaker;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -264,9 +270,8 @@
 			baseConfigurationReference = 6553A1DB0926F00F0034739A /* _api_release.xcconfig */;
 			buildSettings = {
 				C4D_ROOTDIR = ../..;
-				OTHER_LDFLAGS = "$(C4D_ROOTDIR)/resource/_api_lib/lib_api_release.a";
-				PREBINDING = NO;
 				PRODUCT_NAME = AMa_ChamferMaker;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

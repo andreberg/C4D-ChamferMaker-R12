@@ -57,8 +57,18 @@ coverage/
 
 *.pyc
 
+# Visual Studio 2012 Stuff
+
+*.vcxproj.user
+*.opensdf
+*.sdf
+*.lastcodeanalysis*
+
 ######## PROJECT SPECIFIC IGNORES ##########
 
 *.cdl*
 *.dylib
 scenes/
+dist/
+__build_win/
+__build_mac/
