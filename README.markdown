@@ -24,9 +24,9 @@ section.
 Supported Versions
 ------------------
 
-The current version, named `AMa_Chamfer_Maker-R14.zip` is for R14,  
+The current version, named `AMa_ChamferMaker-R14.zip` is for R14,  
 but you can also find the previous version for R12/R13 in the downloads  
-section named `AMa_Chamfer_Maker.zip`.
+section named `AMa_ChamferMaker.zip`.
 
 Development
 -----------
