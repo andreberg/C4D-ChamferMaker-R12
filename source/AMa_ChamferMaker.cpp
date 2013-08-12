@@ -9,7 +9,6 @@
 const LONG AMaPOINT_MAP_MAX_BRICKS = 50;
 
 struct AMaPointMap_struct {
-    
     LONG * map_plus, * map_minus[AMaPOINT_MAP_MAX_BRICKS], bricksAllocated, cntInBr;
 
     AMaPointMap_struct() {
@@ -18,9 +17,8 @@ struct AMaPointMap_struct {
             map_minus[i] = NULL;
         }
     };
-    
+
     Bool AllocAMaPointMap(LONG * map, LONG cnt, LONG objPntCnt) {
-        
         LONG y;
 
         map_minus[0] = (LONG *)GeAlloc(sizeof(LONG) * objPntCnt);
@@ -30,7 +28,7 @@ struct AMaPointMap_struct {
         for ( y = 0; y < objPntCnt; y++) {
             map_minus[0][y] = -1;
         }
-        
+
         map_plus = (LONG *)GeAlloc(sizeof(LONG) * objPntCnt);
         if ( !map_plus) {
             return false;
@@ -38,11 +36,10 @@ struct AMaPointMap_struct {
         for ( y = 0; y < objPntCnt; y++) {
             map_plus[y] = -1;
         }
-        
+
         bricksAllocated = 1;
         cntInBr = objPntCnt;
         for ( LONG i = 0; i < cnt; i++) {
-            
             if ( map[ i * 2] > objPntCnt) {
                 return false;
             }
@@ -72,14 +69,14 @@ struct AMaPointMap_struct {
         }
         return true;
     };
-    
+
     void Free() {
         GeFree(map_plus);
         for ( LONG i = 0; i < bricksAllocated; i++) {
             GeFree(map_minus[i]);
         }
     };
-    
+
     LONG GetNum(LONG p) {
         LONG result;
 
@@ -95,7 +92,7 @@ struct AMaPointMap_struct {
             return result;
         }
     };
-    
+
     void PrintMinus1() {
         for ( LONG i = 0; i < cntInBr; i++) {
             GePrint(LongToString(i) + "   " + LongToString(map_minus[0][i]));
@@ -116,7 +113,7 @@ Bool findNextPointInNgn(Ngon * Ngn, LONG p, LONG &prP);
 Bool findNextPointAlongNgn(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG &p4);
 // Bool Compare_pBaseObjects( BaseObject *Ob, BaseObject *cacheOb) ;
 void SelectOpenEdges(PolygonObject * obj, Neighbor * nbr, BaseSelect * selE);
-void SelectEdgesWithThrAngle(PolygonObject * obj, Neighbor * nbr, Modeling * krnl, BaseSelect * selE,Real ang, Bool andOpen);
+void SelectEdgesWithThrAngle(PolygonObject * obj, Neighbor * nbr, Modeling * krnl, BaseSelect * selE, Real ang, Bool andOpen);
 LONG Point_From_Plg(const CPolygon * Plg, LONG i);
 LONG GetEdgeFromPoints(const CPolygon * plgns, Neighbor * nbr, LONG p1, LONG p2);
 Bool GetNgnFrom3pnts(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG &ngn);
@@ -127,33 +124,32 @@ Bool ConnectPnts(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2pl1, LONG
 
 
 class AMaChamMaker : public ObjectData {
-  public:
-    virtual Bool Init(GeListNode * node);
-    virtual Bool GetDDescription(GeListNode * node, Description * description, DESCFLAGS_DESC& flags);
-    virtual BaseObject * GetVirtualObjects(BaseObject * op, HierarchyHelp * hh);
+public:
+virtual Bool Init(GeListNode * node);
+virtual Bool GetDDescription(GeListNode * node, Description * description, DESCFLAGS_DESC& flags);
+virtual BaseObject * GetVirtualObjects(BaseObject * op, HierarchyHelp * hh);
 
-    static NodeData * Alloc(void) {
-        return gNew AMaChamMaker;
-    }
-  private:
-    PolygonObject * obj;
-    BaseContainer * data;
-    BaseSelect * selE;
-    Modeling * krnl;
-    Neighbor nbr;
-    Bool NbrInited;
-    Bool krnlInited;
+static NodeData * Alloc(void) {
+    return gNew AMaChamMaker;
+}
+private:
+PolygonObject * obj;
+BaseContainer * data;
+BaseSelect * selE;
+Modeling * krnl;
+Neighbor nbr;
+Bool NbrInited;
+Bool krnlInited;
 
-    Bool Recurse_All_Childs(BaseObject * gener, BaseThread * bt, BaseObject * op, String s_hierarPath);
-    Bool Recurse_First_Child(BaseObject * gener, BaseThread * bt, BaseObject * op, BaseObject * main, String s_hierarPath);
-    Bool ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * realObj);
-    Bool MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool DoubleParallel, Bool CompositeFirstPass);
-    HNWeightTag * get_HN_tag();
+Bool Recurse_All_Childs(BaseObject * gener, BaseThread * bt, BaseObject * op, String s_hierarPath);
+Bool Recurse_First_Child(BaseObject * gener, BaseThread * bt, BaseObject * op, BaseObject * main, String s_hierarPath);
+Bool ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * realObj);
+Bool MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool DoubleParallel, Bool CompositeFirstPass);
+HNWeightTag * get_HN_tag();
 };
 
 // ----------Init-----------------------------------------------------------------------------------
 Bool AMaChamMaker::Init(GeListNode * node) {
-    
     BaseObject * op = (BaseObject *)node;
 
     data = op->GetDataInstance();
@@ -177,7 +173,7 @@ Bool AMaChamMaker::Init(GeListNode * node) {
     falloffspline->InsertKnot(0.0, 0.0);
     falloffspline->InsertKnot(0.441, 0.742);
     falloffspline->InsertKnot(1.0, 1.0);
-    //falloffspline->SetRound(0.34);
+    // falloffspline->SetRound(0.34);
     data->SetData(AMa_CHMMKR_PATH, GeData(CUSTOMDATATYPE_SPLINE, falloffspline));
     data->SetReal(AMa_CHMMKR_EXTRUSION, 6.0);
     data->SetReal(AMa_CHMMKR_EXTRU_VARI, 0.0);
@@ -201,7 +197,6 @@ Bool AMaChamMaker::Init(GeListNode * node) {
 
 // ----------GetDDescription----------------------------------------------------------------------------
 Bool AMaChamMaker::GetDDescription(GeListNode * node, Description * description, DESCFLAGS_DESC &flags) {
-    
     if ( !description || !node) {
         return FALSE;
     }
@@ -345,7 +340,6 @@ Bool AMaChamMaker::GetDDescription(GeListNode * node, Description * description,
 
 // ----------GetVirtualObjects-------------------------------------------------------------------------------
 BaseObject * AMaChamMaker::GetVirtualObjects(BaseObject * gener, HierarchyHelp * hh) {
-    
     BaseObject * orig = gener->GetDown();
 
     if ( !orig) {
@@ -385,9 +379,7 @@ BaseObject * AMaChamMaker::GetVirtualObjects(BaseObject * gener, HierarchyHelp *
 
 // ----------Recurse_All_Childs-------------------------------------------------------------------------------------
 Bool AMaChamMaker::Recurse_All_Childs(BaseObject * gener, BaseThread * bt, BaseObject * op, String s_hierarPath) {
-    
     if ( op->IsInstanceOf(Opolygon)) {
-        
         BaseObject * realObj = gener;
         for ( LONG i = 0; i < s_hierarPath.GetLength(); i++) {
             switch ( s_hierarPath[i]) {
@@ -421,7 +413,6 @@ Bool AMaChamMaker::Recurse_All_Childs(BaseObject * gener, BaseThread * bt, BaseO
 // ----------Recurse_First_Child-------------------------------------------------------------------------------------
 Bool AMaChamMaker::Recurse_First_Child(BaseObject * gener, BaseThread * bt, BaseObject * op,
                                        BaseObject * main, String s_hierarPath) {
-
     BaseObject * op_copy;
     Matrix matrG;
 
@@ -462,7 +453,6 @@ Bool AMaChamMaker::Recurse_First_Child(BaseObject * gener, BaseThread * bt, Base
 
 // ----------ModifyObj--------------------------------------------------------------------------------------
 Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * realObj) {
-    
     NbrInited = false;
     krnlInited = false;
     obj = ToPoly(op);
@@ -591,7 +581,7 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
     }
 
     if ( CompMode) {
-        chk = MakeChamf_In_AMa_PARALLEL_Mode(true, !Need_C4D_Bevel, true);            // ////////   ! ! ! !
+        chk = MakeChamf_In_AMa_PARALLEL_Mode(true, !Need_C4D_Bevel, true);         // ////////   ! ! ! !
         if ( !chk) {
             return FALSE;
         }
@@ -641,13 +631,12 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
 #define ID_AMa_CHAMFER_MAKER 1020439    // be sure to use a unique ID obtained from www.plugincafe.com
 
 Bool Register_AMa_Deformer(void) {
-    
     String name = GeLoadString(IDS_AMaChamferMAKER_MENU_NAME);
 
     if ( !name.Content()) {
         return TRUE;
     }
-    // Bool RegisterObjectPlugin(LONG id, const String &str, LONG info, DataAllocator *g, 
+    // Bool RegisterObjectPlugin(LONG id, const String &str, LONG info, DataAllocator *g,
     //                           const String &description, BaseBitmap *icon, LONG disklevel);
     return RegisterObjectPlugin(ID_AMa_CHAMFER_MAKER, name, OBJECT_GENERATOR | OBJECT_INPUT,
                                 AMaChamMaker::Alloc, "O_AMa_ChamferMaker", AutoBitmap("AMa_ChamferMaker.tif"), 0);
@@ -656,7 +645,6 @@ Bool Register_AMa_Deformer(void) {
 // -----------get_HN_tag--------------------------------------------------------------------
 
 HNWeightTag * AMaChamMaker::get_HN_tag() {
-    
     for ( BaseTag * tag = obj->GetFirstTag(); tag; tag = tag->GetNext()) {
         if ( tag->GetType() == 1007579) {
             return ( (HNWeightTag *)tag);
@@ -669,7 +657,6 @@ HNWeightTag * AMaChamMaker::get_HN_tag() {
 // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 struct EdgeDataStruct {
-    
     LONG pA, pB, num;
     EdgeDataStruct * wing_AL, * wing_BL, * wing_AR, * wing_BR;
     EdgeDataStruct * secWing_AL, * secWing_BL, * secWing_AR, * secWing_BR;
@@ -851,7 +838,6 @@ struct ConnectOutlinesDot_Struct {
 // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool DoubleParallel, Bool CompositeFirstPass) {
-    
     Real ConnectThresh, ChamfRadius, Weld, FistPassOfDouble = false;
     Bool CloseFans, ProlongOutlines, ConnectOutlines;
     LONG OrigPntCnt = obj->GetPointCount();
@@ -1374,16 +1360,16 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                         quantityInLine++;
                         vectAverage = !( vectAverage * quantityInLine + edc_wing->vector);
                         edc->connCheked[ w] |= 2;
-                        edc->connCheked[ w ^2] |= 1;
+                        edc->connCheked[ w ^ 2] |= 1;
                         edc_wing->connCheked[ wAnti] |= 2;
-                        edc_wing->connCheked[ wAnti ^2] |= 1;
+                        edc_wing->connCheked[ wAnti ^ 2] |= 1;
 
                         arrDotsForConnOutl[ ConnOutlCnt] =
-                            (ConnectOutlinesDot_Struct *)GeAlloc ( sizeof(ConnectOutlinesDot_Struct));
+                            (ConnectOutlinesDot_Struct *)GeAlloc(sizeof(ConnectOutlinesDot_Struct));
                         if ( !arrDotsForConnOutl[ ConnOutlCnt]) {
                             return false;
                         }
-                        arrDotsForConnOutl[ ConnOutlCnt]->pnt = edc->p ( w);
+                        arrDotsForConnOutl[ ConnOutlCnt]->pnt = edc->p(w);
                         arrDotsForConnOutl[ ConnOutlCnt]->edge[0] = edc;
                         arrDotsForConnOutl[ ConnOutlCnt]->edge[1] = edc_wing;
                         arrDotsForConnOutl[ ConnOutlCnt]->edgeSide[0] = w;
@@ -1392,7 +1378,7 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                         ConnOutlCnt++;
 
                         edc = edc_wing;
-                        w = wAnti ^1;
+                        w = wAnti ^ 1;
                     }
                     if ( !w_ab) {
                         ed_end = edc;
@@ -1407,17 +1393,20 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                     connOutlChain->edgeEnd = ed_end;
                     connOutlChain->ab_Start = ab_start;
                     connOutlChain->ab_End = ab_end;
-                    if ( connOutlChain_prev)
-                    connOutlChain_prev->next = connOutlChain;
+                    if ( connOutlChain_prev) {
+                        connOutlChain_prev->next = connOutlChain;
+                    }
                     connOutlChain_prev = connOutlChain;
-                    if ( !connOutlChainFirst)
-                    connOutlChainFirst = connOutlChain;
+                    if ( !connOutlChainFirst) {
+                        connOutlChainFirst = connOutlChain;
+                    }
                     chainFilled = true;
                 }
             }
         }
-        if ( !chainFilled)
-        GeFree ( connOutlChain);
+        if ( !chainFilled) {
+            GeFree(connOutlChain);
+        }
     }     // if ConnectOutlines
 
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1429,10 +1418,10 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                 EdgeDataStruct ** pSecWing = &ed->secWing_AL;
                 for ( s = 0; s < 4; s++) {
                     ed->HN_weight[s] = ed->HN_weight_edg;
-                    if ( pSecWing[s] && pSecWing[s]->HN_weight_edg != 1.0) {
-                        if ( ed->HN_weight[s] == 1.0)
-                        ed->HN_weight[s] = pSecWing[s]->HN_weight_edg;
-                        else {
+                    if ( pSecWing[s] && (pSecWing[s]->HN_weight_edg != 1.0)) {
+                        if ( ed->HN_weight[s] == 1.0) {
+                            ed->HN_weight[s] = pSecWing[s]->HN_weight_edg;
+                        } else {
                             if ( HN_priority) {
                                 if ( ed->HN_weight[s] < pSecWing[s]->HN_weight_edg) {
                                     ed->HN_weight[s] = pSecWing[s]->HN_weight_edg;
@@ -1450,16 +1439,18 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
             for ( i = 0; i < ChargedEDaCount; i++) {
                 EdgeDataStruct * ed = EdgeData[indEDa[i]];
                 LONG * ppAB = &ed->pA;
-                for ( s = 0; s < 4; s++)
-                ed->HN_weight[s] = Abs ( 1.0 + ( *HN_data.pointweight)[ ppAB[ s % 2]]);
+                for ( s = 0; s < 4; s++) {
+                    ed->HN_weight[s] = Abs(1.0 + ( *HN_data.pointweight)[ ppAB[ s % 2]]);
+                }
             }
         }
         if ( longUseHN == AMa_CHMMKR_HN_BOTH) {
             for ( i = 0; i < ChargedEDaCount; i++) {
                 EdgeDataStruct * ed = EdgeData[indEDa[i]];
                 LONG * ppAB = &ed->pA;
-                for ( s = 0; s < 4; s++)
-                ed->HN_weight[s] *= Abs ( 1.0 + ( *HN_data.pointweight)[ ppAB[ s % 2]]);
+                for ( s = 0; s < 4; s++) {
+                    ed->HN_weight[s] *= Abs(1.0 + ( *HN_data.pointweight)[ ppAB[ s % 2]]);
+                }
             }
         }
 
@@ -1473,10 +1464,11 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     }     // if useHN
 
     if ( delHN_Tag) {
-        NH_Tag->Remove ();
-        HNWeightTag ::Free ( NH_Tag);
-    } else if ( useHN)
-    *HN_data.changed = true;
+        NH_Tag->Remove();
+        HNWeightTag ::Free(NH_Tag);
+    } else if ( useHN) {
+        *HN_data.changed = true;
+    }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////----------------------------------------------------------  MODELING  --------------------
@@ -1485,12 +1477,15 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     Bool treatedWing_AL, treatedWing_BL, treatedWing_AR, treatedWing_BR;
     for ( i = 0; i < ChargedEDaCount; i++) {
         EdgeDataStruct * ed = EdgeData[indEDa[i]];
-        if ( useHN)
-        for ( s = 0; s < 4; s++)
-        ed->HN_weight[s] = ChamfRadius * Abs ( ed->HN_weight[s]);
-        else
-        for ( s = 0; s < 4; s++)
-        ed->HN_weight[s] = ChamfRadius;
+        if ( useHN) {
+            for ( s = 0; s < 4; s++) {
+                ed->HN_weight[s] = ChamfRadius * Abs(ed->HN_weight[s]);
+            }
+        } else {
+            for ( s = 0; s < 4; s++) {
+                ed->HN_weight[s] = ChamfRadius;
+            }
+        }
         treatedWing_AL = false;
         treatedWing_BL = false;
         treatedWing_AR = false;
@@ -1498,71 +1493,75 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
 
         // ----------------------------------------------------------  pA_ins  &  pB_ins   finding
         if (     ed->wing_AL && ed->wing_AL->treated) {
-            ed->pA_ins = ed->wing_AL->GetAdjacentInserted ( ed->pA, ed->pB);
+            ed->pA_ins = ed->wing_AL->GetAdjacentInserted(ed->pA, ed->pB);
             treatedWing_AL = true;
         }
         if ( ed->wing_AR && ed->wing_AR->treated) {
-            ed->pA_ins = ed->wing_AR->GetAdjacentInserted ( ed->pA, ed->pB);
+            ed->pA_ins = ed->wing_AR->GetAdjacentInserted(ed->pA, ed->pB);
             treatedWing_AR = true;
         }
         if ( ed->wing_BL && ed->wing_BL->treated) {
-            ed->pB_ins = ed->wing_BL->GetAdjacentInserted ( ed->pB, ed->pA);
+            ed->pB_ins = ed->wing_BL->GetAdjacentInserted(ed->pB, ed->pA);
             treatedWing_BL = true;
         }
         if ( ed->wing_BR && ed->wing_BR->treated) {
-            ed->pB_ins = ed->wing_BR->GetAdjacentInserted ( ed->pB, ed->pA);
+            ed->pB_ins = ed->wing_BR->GetAdjacentInserted(ed->pB, ed->pA);
             treatedWing_BR = true;
         }
 
         // ------------------------------------------------------------------------------------- AL
         if ( ed->secWing_AL && ed->secWing_AL->treated) {
-            ed->wingAL_ins = ed->secWing_AL->GetAdjacentInserted ( ed->pA, ed->wingPntAL);
+            ed->wingAL_ins = ed->secWing_AL->GetAdjacentInserted(ed->pA, ed->wingPntAL);
         } else {
             if ( ed->wingOfWing_AL1 && ed->wingOfWing_AL1->treated) {
-                wingPnt_new_ins = ed->wingOfWing_AL1->GetAdjacentInserted ( ed->wingPntAL, ed->pA);
+                wingPnt_new_ins = ed->wingOfWing_AL1->GetAdjacentInserted(ed->wingPntAL, ed->pA);
             } else if ( ed->wingOfWing_AL2 && ed->wingOfWing_AL2->treated) {
-                wingPnt_new_ins = ed->wingOfWing_AL2->GetAdjacentInserted ( ed->wingPntAL, ed->pA);
+                wingPnt_new_ins = ed->wingOfWing_AL2->GetAdjacentInserted(ed->wingPntAL, ed->pA);
             } else {
                 wingPnt_new_ins = ed->wingPntAL;
             }
-            
-            ed->wingAL_ins = SplitEdge_AbsDist ( krnl, obj, ed->pA, wingPnt_new_ins, ed->HN_weight[0],
-                                                 ed->closeForWeld[0]);
-            if ( !ed->wingAL_ins)
-            return false;
+
+            ed->wingAL_ins = SplitEdge_AbsDist(krnl, obj, ed->pA, wingPnt_new_ins, ed->HN_weight[0],
+                                               ed->closeForWeld[0]);
+            if ( !ed->wingAL_ins) {
+                return false;
+            }
         }
         ed->outlAL_ins = ed->wingAL_ins;
 
         if ( treatedWing_AL) {
             if ( ed->wingOfWing_AL1 && ed->wingOfWing_AL1->treated) {
-                chk = findNextPointAlongNgn ( krnl, obj, ed->wingAL_ins, ed->pA, ed->pA_ins, pn_wing_outl_far_ins);
-                if ( !chk)
-                return false;
-            } else
-            pn_wing_outl_far_ins = ed->wing_AL->Get_AtoB_inserted ( ed->pA, ed->pB);
+                chk = findNextPointAlongNgn(krnl, obj, ed->wingAL_ins, ed->pA, ed->pA_ins, pn_wing_outl_far_ins);
+                if ( !chk) {
+                    return false;
+                }
+            } else {
+                pn_wing_outl_far_ins = ed->wing_AL->Get_AtoB_inserted(ed->pA, ed->pB);
+            }
 
-            ed->outlAL_ins = SplitEdge_AbsDist ( krnl, obj, ed->pA_ins, pn_wing_outl_far_ins, ed->HN_weight[0]);
-            if ( !ed->outlAL_ins)
-            return false;
-            chk = ConnectPnts ( krnl, obj, ed->wingAL_ins, ed->outlAL_ins, ed->pA_ins, ed->pA);
+            ed->outlAL_ins = SplitEdge_AbsDist(krnl, obj, ed->pA_ins, pn_wing_outl_far_ins, ed->HN_weight[0]);
+            if ( !ed->outlAL_ins) {
+                return false;
+            }
+            chk = ConnectPnts(krnl, obj, ed->wingAL_ins, ed->outlAL_ins, ed->pA_ins, ed->pA);
             if ( !chk) {
                 return false;
             }
         }
         // ------------------------------------------------------------------------------------- BL
         if ( ed->secWing_BL && ed->secWing_BL->treated) {
-            ed->wingBL_ins = ed->secWing_BL->GetAdjacentInserted ( ed->pB, ed->wingPntBL);
+            ed->wingBL_ins = ed->secWing_BL->GetAdjacentInserted(ed->pB, ed->wingPntBL);
         } else {
             if ( ed->wingOfWing_BL1 && ed->wingOfWing_BL1->treated) {
-                wingPnt_new_ins = ed->wingOfWing_BL1->GetAdjacentInserted ( ed->wingPntBL, ed->pB);
+                wingPnt_new_ins = ed->wingOfWing_BL1->GetAdjacentInserted(ed->wingPntBL, ed->pB);
             } else if ( ed->wingOfWing_BL2 && ed->wingOfWing_BL2->treated) {
-                wingPnt_new_ins = ed->wingOfWing_BL2->GetAdjacentInserted ( ed->wingPntBL, ed->pB);
+                wingPnt_new_ins = ed->wingOfWing_BL2->GetAdjacentInserted(ed->wingPntBL, ed->pB);
             } else {
                 wingPnt_new_ins = ed->wingPntBL;
             }
 
-            ed->wingBL_ins = SplitEdge_AbsDist ( krnl, obj, ed->pB, wingPnt_new_ins, ed->HN_weight[1],
-                                                 ed->closeForWeld[1]);
+            ed->wingBL_ins = SplitEdge_AbsDist(krnl, obj, ed->pB, wingPnt_new_ins, ed->HN_weight[1],
+                                               ed->closeForWeld[1]);
             if ( !ed->wingBL_ins) {
                 return false;
             }
@@ -1571,18 +1570,20 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
 
         if ( treatedWing_BL) {
             if ( ed->wingOfWing_BL1 && ed->wingOfWing_BL1->treated) {
-                chk = findNextPointAlongNgn ( krnl, obj, ed->wingBL_ins, ed->pB, ed->pB_ins, pn_wing_outl_far_ins);
-                if ( !chk)
-                return false;
-            } else
-            pn_wing_outl_far_ins = ed->wing_BL->Get_AtoB_inserted ( ed->pB, ed->pA);
+                chk = findNextPointAlongNgn(krnl, obj, ed->wingBL_ins, ed->pB, ed->pB_ins, pn_wing_outl_far_ins);
+                if ( !chk) {
+                    return false;
+                }
+            } else {
+                pn_wing_outl_far_ins = ed->wing_BL->Get_AtoB_inserted(ed->pB, ed->pA);
+            }
 
-            ed->outlBL_ins = SplitEdge_AbsDist ( krnl, obj, ed->pB_ins, pn_wing_outl_far_ins, ed->HN_weight[1]);
+            ed->outlBL_ins = SplitEdge_AbsDist(krnl, obj, ed->pB_ins, pn_wing_outl_far_ins, ed->HN_weight[1]);
             if ( !ed->outlBL_ins) {
                 return false;
             }
-            
-            chk = ConnectPnts ( krnl, obj, ed->wingBL_ins, ed->outlBL_ins, ed->pB_ins, ed->pB);
+
+            chk = ConnectPnts(krnl, obj, ed->wingBL_ins, ed->outlBL_ins, ed->pB_ins, ed->pB);
             if ( !chk) {
                 return false;
             }
@@ -1599,7 +1600,7 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
             pn_plg_identif_1 = ed->pA_ins;
             pn_plg_identif_2 = ed->pB_ins;
         }
-        chk = ConnectPnts ( krnl, obj, ed->outlBL_ins, ed->outlAL_ins, pn_plg_identif_1, pn_plg_identif_2);
+        chk = ConnectPnts(krnl, obj, ed->outlBL_ins, ed->outlAL_ins, pn_plg_identif_1, pn_plg_identif_2);
         if ( !chk) {
             return false;
         }
@@ -1607,18 +1608,18 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
         if ( !ed->open) {
             // ------------------------------------------------------------------------------------- AR
             if ( ed->secWing_AR && ed->secWing_AR->treated) {
-                ed->wingAR_ins = ed->secWing_AR->GetAdjacentInserted ( ed->pA, ed->wingPntAR);
+                ed->wingAR_ins = ed->secWing_AR->GetAdjacentInserted(ed->pA, ed->wingPntAR);
             } else {
                 if ( ed->wingOfWing_AR1 && ed->wingOfWing_AR1->treated) {
-                    wingPnt_new_ins = ed->wingOfWing_AR1->GetAdjacentInserted ( ed->wingPntAR, ed->pA);
+                    wingPnt_new_ins = ed->wingOfWing_AR1->GetAdjacentInserted(ed->wingPntAR, ed->pA);
                 } else if ( ed->wingOfWing_AR2 && ed->wingOfWing_AR2->treated) {
-                    wingPnt_new_ins = ed->wingOfWing_AR2->GetAdjacentInserted ( ed->wingPntAR, ed->pA);
+                    wingPnt_new_ins = ed->wingOfWing_AR2->GetAdjacentInserted(ed->wingPntAR, ed->pA);
                 } else {
                     wingPnt_new_ins = ed->wingPntAR;
                 }
 
-                ed->wingAR_ins = SplitEdge_AbsDist ( krnl, obj, ed->pA, wingPnt_new_ins, ed->HN_weight[2], 
-                                                    ed->closeForWeld[2]);
+                ed->wingAR_ins = SplitEdge_AbsDist(krnl, obj, ed->pA, wingPnt_new_ins, ed->HN_weight[2],
+                                                   ed->closeForWeld[2]);
                 if ( !ed->wingAR_ins) {
                     return false;
                 }
@@ -1627,65 +1628,64 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
 
             if ( treatedWing_AR) {
                 if ( ed->wingOfWing_AR1 && ed->wingOfWing_AR1->treated) {
-                    chk = findNextPointAlongNgn ( krnl, obj, ed->wingAR_ins, ed->pA, ed->pA_ins, pn_wing_outl_far_ins);
+                    chk = findNextPointAlongNgn(krnl, obj, ed->wingAR_ins, ed->pA, ed->pA_ins, pn_wing_outl_far_ins);
                     if ( !chk) {
                         return false;
                     }
                 } else {
-                    pn_wing_outl_far_ins = ed->wing_AR->Get_AtoB_inserted ( ed->pA, ed->pB);
+                    pn_wing_outl_far_ins = ed->wing_AR->Get_AtoB_inserted(ed->pA, ed->pB);
                 }
 
-                ed->outlAR_ins = SplitEdge_AbsDist ( krnl, obj, ed->pA_ins, pn_wing_outl_far_ins, ed->HN_weight[2]);
-                
+                ed->outlAR_ins = SplitEdge_AbsDist(krnl, obj, ed->pA_ins, pn_wing_outl_far_ins, ed->HN_weight[2]);
+
                 if ( !ed->outlAR_ins) {
                     return false;
                 }
-                chk = ConnectPnts ( krnl, obj, ed->wingAR_ins, ed->outlAR_ins, ed->pA_ins, ed->pA);
+                chk = ConnectPnts(krnl, obj, ed->wingAR_ins, ed->outlAR_ins, ed->pA_ins, ed->pA);
                 if ( !chk) {
                     return false;
                 }
             }
             // ------------------------------------------------------------------------------------- BR
             if ( ed->secWing_BR && ed->secWing_BR->treated) {
-                ed->wingBR_ins = ed->secWing_BR->GetAdjacentInserted ( ed->pB, ed->wingPntBR);
+                ed->wingBR_ins = ed->secWing_BR->GetAdjacentInserted(ed->pB, ed->wingPntBR);
             } else {
                 if ( ed->wingOfWing_BR1 && ed->wingOfWing_BR1->treated) {
-                    wingPnt_new_ins = ed->wingOfWing_BR1->GetAdjacentInserted ( ed->wingPntBR, ed->pB);
+                    wingPnt_new_ins = ed->wingOfWing_BR1->GetAdjacentInserted(ed->wingPntBR, ed->pB);
                 } else if ( ed->wingOfWing_BR2 && ed->wingOfWing_BR2->treated) {
-                    wingPnt_new_ins = ed->wingOfWing_BR2->GetAdjacentInserted ( ed->wingPntBR, ed->pB);
+                    wingPnt_new_ins = ed->wingOfWing_BR2->GetAdjacentInserted(ed->wingPntBR, ed->pB);
                 } else {
                     wingPnt_new_ins = ed->wingPntBR;
                 }
 
-                ed->wingBR_ins = SplitEdge_AbsDist ( krnl, obj, ed->pB, wingPnt_new_ins, ed->HN_weight[3],
-                                                     ed->closeForWeld[3]);
+                ed->wingBR_ins = SplitEdge_AbsDist(krnl, obj, ed->pB, wingPnt_new_ins, ed->HN_weight[3],
+                                                   ed->closeForWeld[3]);
                 if ( !ed->wingBR_ins) {
                     return false;
                 }
             }
-            
+
             ed->outlBR_ins = ed->wingBR_ins;
 
             if ( treatedWing_BR) {
                 if ( ed->wingOfWing_BR1 && ed->wingOfWing_BR1->treated) {
-                    chk = findNextPointAlongNgn ( krnl, obj, ed->wingBR_ins, ed->pB, ed->pB_ins, pn_wing_outl_far_ins);
+                    chk = findNextPointAlongNgn(krnl, obj, ed->wingBR_ins, ed->pB, ed->pB_ins, pn_wing_outl_far_ins);
                     if ( !chk) {
                         return false;
                     }
                 } else {
-                    pn_wing_outl_far_ins = ed->wing_BR->Get_AtoB_inserted ( ed->pB, ed->pA);
+                    pn_wing_outl_far_ins = ed->wing_BR->Get_AtoB_inserted(ed->pB, ed->pA);
                 }
 
-                ed->outlBR_ins = SplitEdge_AbsDist ( krnl, obj, ed->pB_ins, pn_wing_outl_far_ins, ed->HN_weight[3]);
+                ed->outlBR_ins = SplitEdge_AbsDist(krnl, obj, ed->pB_ins, pn_wing_outl_far_ins, ed->HN_weight[3]);
                 if ( !ed->outlBR_ins) {
                     return false;
                 }
-                
-                chk = ConnectPnts ( krnl, obj, ed->wingBR_ins, ed->outlBR_ins, ed->pB_ins, ed->pB);
+
+                chk = ConnectPnts(krnl, obj, ed->wingBR_ins, ed->outlBR_ins, ed->pB_ins, ed->pB);
                 if ( !chk) {
                     return false;
                 }
-                
             }
             // ------------------------------------------------------------------- connect (long slice) R
             if ( treatedWing_AR) {
@@ -1698,7 +1698,7 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                 pn_plg_identif_1 = ed->pA_ins;
                 pn_plg_identif_2 = ed->pB_ins;
             }
-            chk = ConnectPnts ( krnl, obj, ed->outlBR_ins, ed->outlAR_ins, pn_plg_identif_1, pn_plg_identif_2);
+            chk = ConnectPnts(krnl, obj, ed->outlBR_ins, ed->outlAR_ins, pn_plg_identif_1, pn_plg_identif_2);
             if ( !chk) {
                 return false;
             }
@@ -1711,16 +1711,16 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
         for ( i = 0; i < ChargedEDaCount; i++) {
             EdgeDataStruct * ed = EdgeData[indEDa[i]];
             if ( ed->wing_AL) {
-                ed->pA_ins = ed->wing_AL->GetAdjacentInserted ( ed->pA, ed->pB);
+                ed->pA_ins = ed->wing_AL->GetAdjacentInserted(ed->pA, ed->pB);
             }
             if ( ed->wing_AR) {
-                ed->pA_ins = ed->wing_AR->GetAdjacentInserted ( ed->pA, ed->pB);
+                ed->pA_ins = ed->wing_AR->GetAdjacentInserted(ed->pA, ed->pB);
             }
             if ( ed->wing_BL) {
-                ed->pB_ins = ed->wing_BL->GetAdjacentInserted ( ed->pB, ed->pA);
+                ed->pB_ins = ed->wing_BL->GetAdjacentInserted(ed->pB, ed->pA);
             }
             if ( ed->wing_BR) {
-                ed->pB_ins = ed->wing_BR->GetAdjacentInserted ( ed->pB, ed->pA);
+                ed->pB_ins = ed->wing_BR->GetAdjacentInserted(ed->pB, ed->pA);
             }
         }
     }     // if CloseFans || ProlongOutlines || CompositeMode
@@ -1729,7 +1729,6 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     // ------------------------------------------------------------------- Close Otlined Edges (fans)		/////////
     if ( CloseFans) {
         for ( i = 0; i < ChargedEDaCount; i++) {
-            
             EdgeDataStruct * ed = EdgeData[indEDa[i]];
             EdgeDataStruct ** pFanEnd = &ed->fanEndAL;
             LONG * pFanCnt = &ed->fanCntAL;
@@ -1750,40 +1749,40 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                     if ( ppIns[ s % 2] != pp[ s % 2]) {
                         p1 = ppIns[ s % 2];
                     } else {
-                        p1 = ppIns[ (s % 2) ^1];
+                        p1 = ppIns[ (s % 2) ^ 1];
                     }
                     p2 = pWingIns[s];
-                    
+
                     Real weightWing = pFanEnd[s]->HN_weight[ ed->fanConterside[s]];
                     LONG StepsCnt = pFanCnt[s] - 1;
-                    
+
                     for ( i = 0; i < StepsCnt; i++) {
-                        chk = GetNextPointInFan ( krnl, obj, pp[ s % 2], p1, p2, p3, finded);
+                        chk = GetNextPointInFan(krnl, obj, pp[ s % 2], p1, p2, p3, finded);
                         if ( !chk || !finded) {
                             return false;
                         }
-                        
+
                         Real rad = ( ed->HN_weight[s] * (Real)( StepsCnt - i) +
                                      weightWing * (Real)( i + 1)) / (Real)( StepsCnt + 1);
-                        pnew = SplitEdge_AbsDist ( krnl, obj, pp[ s % 2], p3, rad);
-                        
+                        pnew = SplitEdge_AbsDist(krnl, obj, pp[ s % 2], p3, rad);
+
                         if ( !pnew) {
                             return false;
                         }
-                        chk = ConnectPnts ( krnl, obj, p2, pnew, pp[ s % 2], p2);
+                        chk = ConnectPnts(krnl, obj, p2, pnew, pp[ s % 2], p2);
                         if ( !chk) {
                             return false;
                         }
                         p1 = p2;
                         p2 = pnew;
                     }
-                    
-                    chk = GetNextPointInFan ( krnl, obj, pp[ s % 2], p1, p2, p3, finded);
+
+                    chk = GetNextPointInFan(krnl, obj, pp[ s % 2], p1, p2, p3, finded);
                     if ( !chk || !finded) {
                         return false;
                     }
-                    
-                    chk = ConnectPnts ( krnl, obj, p2, p3, pp[ s % 2], p2);
+
+                    chk = ConnectPnts(krnl, obj, p2, p3, pp[ s % 2], p2);
                     if ( !chk) {
                         return false;
                     }
@@ -1795,7 +1794,6 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // ///////////-------------------------------/////////////////////////////////   prolong outlines
     for ( i = 0; i < ChargedEDaCount; i++) {
-        
         if ( !ProlongOutlines) {
             break;
         }
@@ -1805,10 +1803,10 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
         if ( ed->open) {
             continue;
         }
-        
+
         for ( s = 0; s < 4; s++) {
-            if ( !ed->wing (s) && ed->wing ( s ^2) && !( ed->connCheked[s ^2] & 2)) {
-                chk = ConnectPnts ( krnl, obj, ed->wing_ins (s), ed->p_ins (s), ed->p (s), ed->wing_ins (s));
+            if ( !ed->wing(s) && ed->wing(s ^ 2) && !( ed->connCheked[s ^ 2] & 2)) {
+                chk = ConnectPnts(krnl, obj, ed->wing_ins(s), ed->p_ins(s), ed->p(s), ed->wing_ins(s));
                 if ( !chk) {
                     return false;
                 }
@@ -1821,30 +1819,29 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     Bool Need_ReInit_Modeling = ( ConnectOutlines && ConnOutlCnt) || Weld;
 
     if ( Need_ReInit_Modeling) {
-        
         AMaPointMap_struct AMaPntMap;
         LONG * pntMap, mapCnt;
 
-        krnl->Commit ( obj, MODELING_COMMIT_CREATEMAP);         // // ! ! ! ! !
+        krnl->Commit(obj, MODELING_COMMIT_CREATEMAP);           // // ! ! ! ! !
 
-        chk = krnl->GetPointMap ( obj, &pntMap, &mapCnt);
+        chk = krnl->GetPointMap(obj, &pntMap, &mapCnt);
         if ( !chk) {
             return false;
         }
-        
-        LONG oldPntCnt = obj->GetPointCount ();
-        chk = AMaPntMap.AllocAMaPointMap ( pntMap, mapCnt, oldPntCnt);
+
+        LONG oldPntCnt = obj->GetPointCount();
+        chk = AMaPntMap.AllocAMaPointMap(pntMap, mapCnt, oldPntCnt);
         if ( !chk) {
             return false;
         }
-        
-        Modeling::Free ( krnl);
-        krnl = Modeling::Alloc ();
+
+        Modeling::Free(krnl);
+        krnl = Modeling::Alloc();
         if ( !krnl) {
             return false;
         }
-        
-        chk = krnl->InitObject ( obj);
+
+        chk = krnl->InitObject(obj);
         if ( !chk) {
             return false;
         }
@@ -1853,8 +1850,8 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
         if ( ConnectOutlines && ConnOutlCnt) {
             if ( CompositeFirstPass) {
                 for ( connOutlChain = connOutlChainFirst; connOutlChain; connOutlChain = connOutlChain->next) {
-                    connOutlChain->pnt1 = AMaPntMap.GetNum ( connOutlChain->edgeStart->p_ins ( connOutlChain->ab_Start));
-                    connOutlChain->pnt2 = AMaPntMap.GetNum ( connOutlChain->edgeEnd->p_ins ( connOutlChain->ab_End));
+                    connOutlChain->pnt1 = AMaPntMap.GetNum(connOutlChain->edgeStart->p_ins(connOutlChain->ab_Start));
+                    connOutlChain->pnt2 = AMaPntMap.GetNum(connOutlChain->edgeEnd->p_ins(connOutlChain->ab_End));
                 }
             }
             // //////////////////////////////////
@@ -1874,96 +1871,92 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                     w1 = dot->edgeSide[0];
                 }
 
-                chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg2->p_ins ( w2)),
-                                       AMaPntMap.GetNum ( edg2->outl_ins ( w2)));
+                chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg2->p_ins(w2)),
+                                     AMaPntMap.GetNum(edg2->outl_ins(w2)));
                 if ( !chk) {
                     return false;
                 }
-                
-                chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg2->wing_ins ( w2)),
-                                       AMaPntMap.GetNum ( edg2->outl_ins ( w2)));
+
+                chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg2->wing_ins(w2)),
+                                     AMaPntMap.GetNum(edg2->outl_ins(w2)));
                 if ( !chk) {
                     return false;
                 }
-                
-                chk = krnl->DeletePoint ( obj, AMaPntMap.GetNum ( edg2->outl_ins ( w2)));
+
+                chk = krnl->DeletePoint(obj, AMaPntMap.GetNum(edg2->outl_ins(w2)));
                 if ( !chk) {
                     return false;
                 }
-                
+
                 // ///
-                if ( edg2->wing ( w2 ^2)) {
-                    if ( edg2->wing ( w2 ^2)->num > edg2->num) {
-                        
-                        CHAR wAnti = edg2->wing ( w2 ^2)->GetCounterpart ( edg2->p ( w2), edg2->p ( w2 ^1));
+                if ( edg2->wing(w2 ^ 2)) {
+                    if ( edg2->wing(w2 ^ 2)->num > edg2->num) {
+                        CHAR wAnti = edg2->wing(w2 ^ 2)->GetCounterpart(edg2->p(w2), edg2->p(w2 ^ 1));
                         if ( !wAnti) {
                             return false;
                         } else {
                             wAnti ^= 4;
                         }
-                        chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg2->wing ( w2 ^2)->wing_ins ( wAnti)),
-                                               AMaPntMap.GetNum ( edg2->wing ( w2 ^2)->outl_ins ( wAnti)));
+                        chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg2->wing(w2 ^ 2)->wing_ins(wAnti)),
+                                             AMaPntMap.GetNum(edg2->wing(w2 ^ 2)->outl_ins(wAnti)));
                     } else {
-                        chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg2->p_ins ( w2 ^2)),
-                                               AMaPntMap.GetNum ( edg2->outl_ins ( w2 ^2)));
+                        chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg2->p_ins(w2 ^ 2)),
+                                             AMaPntMap.GetNum(edg2->outl_ins(w2 ^ 2)));
                     }
                     if ( !chk) {
                         return false;
                     }
-                    
                 }
-                chk = krnl->DeletePoint ( obj, AMaPntMap.GetNum ( edg2->p_ins ( w2)));
+                chk = krnl->DeletePoint(obj, AMaPntMap.GetNum(edg2->p_ins(w2)));
                 if ( !chk) {
                     return false;
                 }
                 //
-                if ( edg1->wing ( w1 ^2)) {
-                    if ( edg1->wing ( w1 ^2)->num > edg1->num) {
-                        CHAR wAnti = edg1->wing ( w1 ^2)->GetCounterpart ( edg1->p ( w1), edg1->p ( w1 ^1));
+                if ( edg1->wing(w1 ^ 2)) {
+                    if ( edg1->wing(w1 ^ 2)->num > edg1->num) {
+                        CHAR wAnti = edg1->wing(w1 ^ 2)->GetCounterpart(edg1->p(w1), edg1->p(w1 ^ 1));
                         if ( !wAnti) {
                             return false;
                         } else {
                             wAnti ^= 4;
                         }
-                        chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg1->wing ( w1 ^2)->wing_ins ( wAnti)),
-                                               AMaPntMap.GetNum ( edg1->wing ( w1 ^2)->outl_ins ( wAnti)));
+                        chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg1->wing(w1 ^ 2)->wing_ins(wAnti)),
+                                             AMaPntMap.GetNum(edg1->wing(w1 ^ 2)->outl_ins(wAnti)));
                     } else {
-                        chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg1->p_ins ( w1 ^2)),
-                                               AMaPntMap.GetNum ( edg1->outl_ins ( w1 ^2)));
+                        chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg1->p_ins(w1 ^ 2)),
+                                             AMaPntMap.GetNum(edg1->outl_ins(w1 ^ 2)));
                     }
                     if ( !chk) {
                         return false;
                     }
                 }
-                chk = krnl->DeletePoint ( obj, AMaPntMap.GetNum ( edg2->wing_ins ( w2)));
+                chk = krnl->DeletePoint(obj, AMaPntMap.GetNum(edg2->wing_ins(w2)));
                 if ( !chk) {
                     return false;
                 }
-                
+
                 // ///
-                if ( edg2->secWing ( w2 ^2) == edg1) {
-                    chk = krnl->MeltEdge ( obj, NOTINDEX, AMaPntMap.GetNum ( edg2->p ( w2)),
-                                           AMaPntMap.GetNum ( edg2->wing_ins ( w2 ^2)));
+                if ( edg2->secWing(w2 ^ 2) == edg1) {
+                    chk = krnl->MeltEdge(obj, NOTINDEX, AMaPntMap.GetNum(edg2->p(w2)),
+                                         AMaPntMap.GetNum(edg2->wing_ins(w2 ^ 2)));
                     if ( !chk) {
                         return false;
                     }
-                    chk = krnl->DeletePoint ( obj, AMaPntMap.GetNum ( edg2->p ( w2)));
+                    chk = krnl->DeletePoint(obj, AMaPntMap.GetNum(edg2->p(w2)));
                     if ( !chk) {
                         return false;
                     }
-                    
                 } else if ( CompositeFirstPass) {
-                    
                     connOutlChain = dot->chain;
                     ConnectOutlinesChain_Struct * connOutlChainNew;
-                    connOutlChainNew = (ConnectOutlinesChain_Struct *)GeAlloc ( sizeof(ConnectOutlinesChain_Struct));
+                    connOutlChainNew = (ConnectOutlinesChain_Struct *)GeAlloc(sizeof(ConnectOutlinesChain_Struct));
                     if ( !connOutlChainNew) {
                         return false;
                     }
-                    
-                    connOutlChainNew->pnt1 = edg2->p ( w2);
+
+                    connOutlChainNew->pnt1 = edg2->p(w2);
                     connOutlChainNew->pnt2 = connOutlChain->pnt2;
-                    connOutlChain->pnt2 = edg2->p ( w2);
+                    connOutlChain->pnt2 = edg2->p(w2);
                     connOutlChainNew->next = connOutlChain->next;
                     connOutlChain->next = connOutlChainNew;
                 }
@@ -1979,7 +1972,7 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
                 LONG * pWingIns = &ed->wingAL_ins;
                 for ( s = 0; s < 4; s++) {
                     if ( !pWing[s] && ed->closeForWeld[s] && !pWingOfWing[s * 2] && !pWingOfWing[s * 2 + 1]) {
-                        chk = krnl->WeldPoints ( obj, AMaPntMap.GetNum ( pWingIns[s]), AMaPntMap.GetNum ( pWingPnt[s]));
+                        chk = krnl->WeldPoints(obj, AMaPntMap.GetNum(pWingIns[s]), AMaPntMap.GetNum(pWingPnt[s]));
                         if ( !chk) {
                             return false;
                         }
@@ -1990,69 +1983,68 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
         // ///////////////////////////////////////////////////////////////////////       RE-SELECT connected edges
         if ( ConnectOutlines && ConnOutlCnt) {
             if ( CompositeFirstPass) {
-                AMaPntMap.Free ();
-                nbr.Flush ();
+                AMaPntMap.Free();
+                nbr.Flush();
                 //
-                krnl->Commit ( obj, MODELING_COMMIT_CREATEMAP);                 // // ! ! ! ! !
-                chk = krnl->GetPointMap ( obj, &pntMap, &mapCnt);
+                krnl->Commit(obj, MODELING_COMMIT_CREATEMAP);                   // // ! ! ! ! !
+                chk = krnl->GetPointMap(obj, &pntMap, &mapCnt);
                 if ( !chk) {
                     return false;
                 }
-                
-                chk = AMaPntMap.AllocAMaPointMap ( pntMap, mapCnt, oldPntCnt);
+
+                chk = AMaPntMap.AllocAMaPointMap(pntMap, mapCnt, oldPntCnt);
                 if ( !chk) {
                     return false;
                 }
                 //
-                Modeling::Free ( krnl);
+                Modeling::Free(krnl);
                 krnlInited = false;
                 //
-                nbr.Init ( obj->GetPointCount (), obj->GetPolygonR (), obj->GetPolygonCount (), NULL);
+                nbr.Init(obj->GetPointCount(), obj->GetPolygonR(), obj->GetPolygonCount(), NULL);
 
                 LONG e, p1, p2;
                 ConnectOutlinesChain_Struct * connOutlChain_next;
                 connOutlChain = connOutlChainFirst;
-                
+
                 while ( connOutlChain) {
-                    
-                    p1 = AMaPntMap.GetNum ( connOutlChain->pnt1);
-                    p2 = AMaPntMap.GetNum ( connOutlChain->pnt2);
-                    e = GetEdgeFromPoints ( obj->GetPolygonR (), &nbr, p1, p2);
+                    p1 = AMaPntMap.GetNum(connOutlChain->pnt1);
+                    p2 = AMaPntMap.GetNum(connOutlChain->pnt2);
+                    e = GetEdgeFromPoints(obj->GetPolygonR(), &nbr, p1, p2);
                     if ( e != -1) {
-                        selE->Select ( e);
+                        selE->Select(e);
                     }
 
                     connOutlChain_next = connOutlChain->next;
-                    GeFree ( connOutlChain);
+                    GeFree(connOutlChain);
                     connOutlChain = connOutlChain_next;
                 }
             }
         }
         // ///////////////////////////////////////
-        AMaPntMap.Free ();
+        AMaPntMap.Free();
     }
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ( krnlInited) {
-        krnl->Commit ();
-        Modeling::Free ( krnl);
+        krnl->Commit();
+        Modeling::Free(krnl);
         krnlInited = false;
     }
 
-    nbr.Flush ();
+    nbr.Flush();
     NbrInited = false;
 
     for ( i = 0; i < ConnOutlCnt; i++) {
-        GeFree ( arrDotsForConnOutl[i]);        
+        GeFree(arrDotsForConnOutl[i]);
     }
-    GeFree ( arrDotsForConnOutl);
+    GeFree(arrDotsForConnOutl);
 
     for ( i = 0; i < ChargedEDaCount; i++) {
-        GeFree ( EdgeData[indEDa[i]]);     
+        GeFree(EdgeData[indEDa[i]]);
     }
-    GeFree ( EdgeData);
-    GeFree ( indEDa);
-    
+    GeFree(EdgeData);
+    GeFree(indEDa);
+
     return true;
 } // MakeChamf_In_AMa_PARALLEL_Mode
 
@@ -2060,21 +2052,19 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
 // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 // ----------IsEdgeDoubled----------------------------------------------------------------------
-Bool IsEdgeDoubled ( Neighbor * nbr, LONG e) {
-    
+Bool IsEdgeDoubled(Neighbor * nbr, LONG e) {
     LONG E_In_P, P_of_E;
     PolyInfo * PlgInf;
 
     E_In_P = e % 4;
     P_of_E = ( e - E_In_P) / 4;
-    PlgInf = nbr->GetPolyInfo ( P_of_E);
-    
+    PlgInf = nbr->GetPolyInfo(P_of_E);
+
     return ( PlgInf->mark[ E_In_P]);
 }
 
 // ----------Get_x4_edge_Points----------------------------------------------------------------------
-void Get_x4_edge_points ( const CPolygon * Plgons, LONG E_In_P, LONG P_of_E, LONG & pA, LONG & pB) {
-    
+void Get_x4_edge_points(const CPolygon * Plgons, LONG E_In_P, LONG P_of_E, LONG & pA, LONG & pB) {
     switch ( E_In_P) {
         case 0:
             pA = Plgons[ P_of_E].a;
@@ -2095,11 +2085,10 @@ void Get_x4_edge_points ( const CPolygon * Plgons, LONG E_In_P, LONG P_of_E, LON
     }
 }
 
-void Get_x4_edge_points ( const CPolygon * Plgons, LONG e, LONG & pA, LONG & pB) {
-    
+void Get_x4_edge_points(const CPolygon * Plgons, LONG e, LONG & pA, LONG & pB) {
     LONG E_In_P = e % 4;
     LONG P_of_E = ( e - E_In_P) / 4;
-    
+
     switch ( E_In_P) {
         case 0:
             pA = Plgons[ P_of_E].a;
@@ -2121,16 +2110,16 @@ void Get_x4_edge_points ( const CPolygon * Plgons, LONG e, LONG & pA, LONG & pB)
 }
 
 // ----------Get_H_position_points----------------------------------------------------------------------
-Bool Get_H_topol_points ( Modeling * krnl, PolygonObject * obj, LONG pA, LONG pB, Bool &valid, 
-                          LONG & wingAL, LONG & wingAR, Bool &opened, LONG & wingBL, LONG & wingBR) {
-    
+Bool Get_H_topol_points(Modeling * krnl, PolygonObject * obj, LONG pA, LONG pB, Bool & valid,
+                        LONG & wingAL, LONG & wingAR, Bool & opened, LONG & wingBL, LONG & wingBR) {
     LONG i, j, edgNgnCnt = 0, a = 0, b = 0;
+
     valid = true;
-    LONG * ngns = krnl->GetEdgeNgons ( obj, pA, pB, edgNgnCnt);
+    LONG * ngns = krnl->GetEdgeNgons(obj, pA, pB, edgNgnCnt);
     if ( !ngns) {
         return FALSE;
     }
-    
+
     if ( !edgNgnCnt) {
         valid = false;
         return true;
@@ -2138,29 +2127,29 @@ Bool Get_H_topol_points ( Modeling * krnl, PolygonObject * obj, LONG pA, LONG pB
     opened = true;
     for ( i = 0; i < edgNgnCnt; i++) {
         Ngon Ngn;
-        chk = krnl->GetNgon ( obj, ngns[i], &Ngn);
+        chk = krnl->GetNgon(obj, ngns[i], &Ngn);
         if ( !chk) {
             return FALSE;
         }
-        
+
         for ( j = 0; j < Ngn.count; j++) {
             LONG hhhh = Ngn.points[j];              // ///////////////////
             if ( Ngn.points[j] == pB) {
-                LONG j_pred = PredPointIndInNgn ( &Ngn, j);
+                LONG j_pred = PredPointIndInNgn(&Ngn, j);
                 if ( Ngn.points[j_pred] == pA) {
-                    a = Ngn.points[ PredPointIndInNgn ( &Ngn, j_pred)];
-                    b = Ngn.points[ NextPointIndInNgn ( &Ngn, j)];
+                    a = Ngn.points[ PredPointIndInNgn(&Ngn, j_pred)];
+                    b = Ngn.points[ NextPointIndInNgn(&Ngn, j)];
                 } else {
-                    LONG j_next = NextPointIndInNgn ( &Ngn, j);
+                    LONG j_next = NextPointIndInNgn(&Ngn, j);
                     if ( Ngn.points[j_next] == pA) {
-                        a = Ngn.points[ NextPointIndInNgn ( &Ngn, j_next)];
-                        b = Ngn.points[ PredPointIndInNgn ( &Ngn, j)];
+                        a = Ngn.points[ NextPointIndInNgn(&Ngn, j_next)];
+                        b = Ngn.points[ PredPointIndInNgn(&Ngn, j)];
                     }
                 }
                 break;
             }
         }
-        Ngn.Free ();
+        Ngn.Free();
 
         if ( i == 0) {
             wingAL = a;
@@ -2171,13 +2160,12 @@ Bool Get_H_topol_points ( Modeling * krnl, PolygonObject * obj, LONG pA, LONG pB
             wingBR = b;
         }
     }
-    krnl->FreeTable ( obj, ngns);
+    krnl->FreeTable(obj, ngns);
     return true;
-}
+} // Get_H_topol_points
 
 // -----------PredPointIndInNgn--------------------------------------------------------------------
-LONG PredPointIndInNgn ( Ngon * Ngn, LONG p) {
-    
+LONG PredPointIndInNgn(Ngon * Ngn, LONG p) {
     if ( Ngn->segcount == 1) {
         if ( p == 0) {
             return ( Ngn->count - 1);
@@ -2203,8 +2191,7 @@ LONG PredPointIndInNgn ( Ngon * Ngn, LONG p) {
 }
 
 // -----------NextPointIndInNgn--------------------------------------------------------------------
-LONG NextPointIndInNgn ( Ngon * Ngn, LONG p) {
-    
+LONG NextPointIndInNgn(Ngon * Ngn, LONG p) {
     if ( Ngn->segcount == 1) {
         if ( p == ( Ngn->count - 1)) {
             return 0;
@@ -2230,10 +2217,10 @@ LONG NextPointIndInNgn ( Ngon * Ngn, LONG p) {
 }
 
 // -----------findPredPointInNgn--------------------------------------------------------------------
-Bool findPredPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
-    
+Bool findPredPointInNgn(Ngon * Ngn, LONG p, LONG & prP) {
     LONG i;
     Bool found = false;
+
     for ( i = 0; i < Ngn->count; i++) {
         if ( Ngn->points[i] == p) {
             found = true;
@@ -2241,7 +2228,7 @@ Bool findPredPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
         }
     }
     if ( found) {
-        prP = Ngn->points[ PredPointIndInNgn ( Ngn, i)];
+        prP = Ngn->points[ PredPointIndInNgn(Ngn, i)];
         return true;
     } else {
         return false;
@@ -2249,10 +2236,10 @@ Bool findPredPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
 }
 
 // -----------findNextPointInNgn--------------------------------------------------------------------
-Bool findNextPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
-    
+Bool findNextPointInNgn(Ngon * Ngn, LONG p, LONG & prP) {
     LONG i;
     Bool found = false;
+
     for ( i = 0; i < Ngn->count; i++) {
         if ( Ngn->points[i] == p) {
             found = true;
@@ -2260,7 +2247,7 @@ Bool findNextPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
         }
     }
     if ( found) {
-        prP = Ngn->points[ NextPointIndInNgn ( Ngn, i)];
+        prP = Ngn->points[ NextPointIndInNgn(Ngn, i)];
         return true;
     } else {
         return false;
@@ -2268,28 +2255,27 @@ Bool findNextPointInNgn ( Ngon * Ngn, LONG p, LONG & prP) {
 }
 
 // -----------findNextPointAlongNgn--------------------------------------------------------------------
-Bool findNextPointAlongNgn ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG & p4) {
-    
+Bool findNextPointAlongNgn(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG & p4) {
     LONG ngn;
     Ngon Ngn;
-    
-    chk = GetNgnFrom3pnts ( krnl, obj, p1, p2, p3, ngn);
+
+    chk = GetNgnFrom3pnts(krnl, obj, p1, p2, p3, ngn);
     if ( !chk) {
         return false;
     }
-    
-    chk = krnl->GetNgon ( obj, ngn, &Ngn);
+
+    chk = krnl->GetNgon(obj, ngn, &Ngn);
     if ( !chk) {
         return false;
     }
-    
-    chk = findNextPointInNgn ( &Ngn, p3, p4);
+
+    chk = findNextPointInNgn(&Ngn, p3, p4);
     if ( !chk) {
         return false;
     }
-    
+
     if ( p4 == p2) {
-        chk = findPredPointInNgn ( &Ngn, p3, p4);
+        chk = findPredPointInNgn(&Ngn, p3, p4);
         if ( !chk) {
             return false;
         }
@@ -2312,7 +2298,6 @@ Bool findNextPointAlongNgn ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG
 
 // ----------SelectOpenEdges-------------------------------------------------------------------------
 void SelectOpenEdges(PolygonObject * obj, Neighbor * nbr, BaseSelect * selE) {
-    
     LONG plgCnt = obj->GetPolygonCount();
     LONG edgCnt = plgCnt * 4;
     const CPolygon * ObjPlgns = obj->GetPolygonR();
@@ -2341,17 +2326,16 @@ void SelectOpenEdges(PolygonObject * obj, Neighbor * nbr, BaseSelect * selE) {
 }
 
 // ----------SelectEdgesWithThrAngle------------------------------------------------------------------
-void SelectEdgesWithThrAngle ( PolygonObject * obj, Neighbor * nbr, Modeling * krnl, BaseSelect * selE, Real ang, Bool andOpen) {
-    
-    Real thresh = Cos ( Rad ( ang));
-    LONG plgCnt = obj->GetPolygonCount ();
-    const CPolygon * ObjPlgns = obj->GetPolygonR ();
+void SelectEdgesWithThrAngle(PolygonObject * obj, Neighbor * nbr, Modeling * krnl, BaseSelect * selE, Real ang, Bool andOpen) {
+    Real thresh = Cos(Rad(ang));
+    LONG plgCnt = obj->GetPolygonCount();
+    const CPolygon * ObjPlgns = obj->GetPolygonR();
     PolyInfo * PlgInf;
     Vector normalA, normalB;
     LONG i, side, a = 0, b = 0, edgNgnCnt;
-    
+
     for ( i = 0; i < plgCnt; i++) {
-        PlgInf = nbr->GetPolyInfo ( i);
+        PlgInf = nbr->GetPolyInfo(i);
         for ( side = 0; side < 4; side++) {
             if ( PlgInf->mark[side]) {
                 continue;
@@ -2362,73 +2346,71 @@ void SelectEdgesWithThrAngle ( PolygonObject * obj, Neighbor * nbr, Modeling * k
                 case 2: a = ObjPlgns[i].c; b = ObjPlgns[i].d; break;
                 case 3: a = ObjPlgns[i].d; b = ObjPlgns[i].a; break;
             }
-            LONG * ngns = krnl->GetEdgeNgons ( obj, a, b, edgNgnCnt);
-            if ( edgNgnCnt == 1 && andOpen) {
-                krnl->FreeTable ( obj, ngns);
-                selE->Select ( i * 4 + side);
+            LONG * ngns = krnl->GetEdgeNgons(obj, a, b, edgNgnCnt);
+            if ((edgNgnCnt == 1) && andOpen) {
+                krnl->FreeTable(obj, ngns);
+                selE->Select(i * 4 + side);
                 continue;
             }
             if ( edgNgnCnt != 2) {
-                krnl->FreeTable ( obj, ngns);
+                krnl->FreeTable(obj, ngns);
                 continue;
             }
-            krnl->GetNgonNormal ( obj, ngns[0], &normalA);
-            krnl->GetNgonNormal ( obj, ngns[1], &normalB);
+            krnl->GetNgonNormal(obj, ngns[0], &normalA);
+            krnl->GetNgonNormal(obj, ngns[1], &normalB);
             if ( normalA * normalB < thresh) {
-                selE->Select ( i * 4 + side);
+                selE->Select(i * 4 + side);
             }
-            krnl->FreeTable ( obj, ngns);
+            krnl->FreeTable(obj, ngns);
         }
     }
 }
 
 // ----------GetEdgeFromPoints----------------------------------------------------------------------
-LONG GetEdgeFromPoints ( const CPolygon * plgns, Neighbor * nbr, LONG p1, LONG p2) {
-    
+LONG GetEdgeFromPoints(const CPolygon * plgns, Neighbor * nbr, LONG p1, LONG p2) {
     LONG j, iip, plg1, plg2, pnt_in_plg_1 = 0, pnt_in_plg_2 = 0, edg_in_plg, plg0;
     PolyInfo * PlgInf;
 
-    nbr->GetEdgePolys ( p1, p2, &plg1, &plg2);
-    plg0 = LMin ( plg1, plg2);
+    nbr->GetEdgePolys(p1, p2, &plg1, &plg2);
+    plg0 = LMin(plg1, plg2);
     if ( plg0 < 0) {
-        plg0 = LMax ( plg1, plg2);
+        plg0 = LMax(plg1, plg2);
     }
-    
+
     for ( iip = 0; iip < 2; iip++) {
         for ( j = 0; j < 4; j++) {
-            if ( p1 == Point_From_Plg ( &(plgns[plg0]), j)) {
+            if ( p1 == Point_From_Plg(&(plgns[plg0]), j)) {
                 pnt_in_plg_1 = j;
                 break;
-            }            
+            }
         }
         for ( j = 0; j < 4; j++) {
-            if ( p2 == Point_From_Plg ( &(plgns[plg0]), j)) {
+            if ( p2 == Point_From_Plg(&(plgns[plg0]), j)) {
                 pnt_in_plg_2 = j;
                 break;
-            }            
+            }
         }
         if ( !( pnt_in_plg_1 || pnt_in_plg_2)) {
             return -1;
         }
-        if ( Abs ( pnt_in_plg_1 - pnt_in_plg_2) > 1) {
+        if ( Abs(pnt_in_plg_1 - pnt_in_plg_2) > 1) {
             edg_in_plg = 3;
         } else {
-            edg_in_plg = LMin ( pnt_in_plg_1, pnt_in_plg_2);
+            edg_in_plg = LMin(pnt_in_plg_1, pnt_in_plg_2);
         }
-        
-        PlgInf = nbr->GetPolyInfo ( plg0);
+
+        PlgInf = nbr->GetPolyInfo(plg0);
         if ( !PlgInf->mark[edg_in_plg]) {
             return ( plg0 * 4 + edg_in_plg);
         } else {
-            plg0 = LMax ( plg1, plg2);
+            plg0 = LMax(plg1, plg2);
         }
     }
     return -1;
 }
 
 // ----------Point_From_Plg-------------------------------------------------------------------------
-LONG Point_From_Plg ( const CPolygon * Plg, LONG i) {
-    
+LONG Point_From_Plg(const CPolygon * Plg, LONG i) {
     switch ( i) {
         case 0: return Plg->a;
         case 1: return Plg->b;
@@ -2439,34 +2421,33 @@ LONG Point_From_Plg ( const CPolygon * Plg, LONG i) {
 }
 
 // ----------GetNgnFrom3pnts-------------------------------------------------------------------------
-Bool GetNgnFrom3pnts ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG & ngn) {
-    
+Bool GetNgnFrom3pnts(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, LONG p3, LONG & ngn) {
     LONG i, j, edgNgnCnt_12, edgNgnCnt_23;
-    LONG * ngns_12 = krnl->GetEdgeNgons ( obj, p1, p2, edgNgnCnt_12);
-    LONG * ngns_23 = krnl->GetEdgeNgons ( obj, p2, p3, edgNgnCnt_23);
-    
+    LONG * ngns_12 = krnl->GetEdgeNgons(obj, p1, p2, edgNgnCnt_12);
+    LONG * ngns_23 = krnl->GetEdgeNgons(obj, p2, p3, edgNgnCnt_23);
+
     for ( i = 0; i < edgNgnCnt_12; i++) {
         for ( j = 0; j < edgNgnCnt_23; j++) {
             if ( ngns_12[i] == ngns_23[j]) {
                 ngn = ngns_12[i];
-                krnl->FreeTable ( obj, ngns_12);
-                krnl->FreeTable ( obj, ngns_23);
+                krnl->FreeTable(obj, ngns_12);
+                krnl->FreeTable(obj, ngns_23);
                 return true;
-            }        
+            }
         }
     }
     return false;
 }
 
 // ----------GetNextPointInFan----------------------------------------------------------------------
-Bool GetNextPointInFan ( Modeling * krnl, PolygonObject * obj, LONG pc, LONG p1, LONG p2, LONG & p3, Bool &found) {
-    
+Bool GetNextPointInFan(Modeling * krnl, PolygonObject * obj, LONG pc, LONG p1, LONG p2, LONG & p3, Bool & found) {
     LONG i, j, edgNgnCnt_c1, edgNgnCnt_c2, nextNgn = 0;
-    LONG * ngns_c1 = krnl->GetEdgeNgons ( obj, pc, p1, edgNgnCnt_c1);
-    LONG * ngns_c2 = krnl->GetEdgeNgons ( obj, pc, p2, edgNgnCnt_c2);
+    LONG * ngns_c1 = krnl->GetEdgeNgons(obj, pc, p1, edgNgnCnt_c1);
+    LONG * ngns_c2 = krnl->GetEdgeNgons(obj, pc, p2, edgNgnCnt_c2);
     Ngon Ngn;
+
     found = false;
-    
+
     for ( i = 0; i < edgNgnCnt_c2; i++) {
         if ( !edgNgnCnt_c1) {
             break;
@@ -2486,90 +2467,88 @@ Bool GetNextPointInFan ( Modeling * krnl, PolygonObject * obj, LONG pc, LONG p1,
     if ( !found) {
         goto Exit;
     }
-    
-    chk = krnl->GetNgon ( obj, nextNgn, &Ngn);
+
+    chk = krnl->GetNgon(obj, nextNgn, &Ngn);
     if ( !chk) {
         return false;
     }
 
     LONG pTmp;
-    chk = findPredPointInNgn ( &Ngn, pc, pTmp);
+    chk = findPredPointInNgn(&Ngn, pc, pTmp);
     if ( !chk) {
         return false;
     }
-    
+
     if ( pTmp == p2) {
-        chk = findNextPointInNgn ( &Ngn, pc, p3);
+        chk = findNextPointInNgn(&Ngn, pc, p3);
         if ( !chk) {
             return false;
         }
     } else {
         p3 = pTmp;
     }
-    
-    Ngn.Free ();
-Exit:
-    krnl->FreeTable ( obj, ngns_c1);
-    krnl->FreeTable ( obj, ngns_c2);
+
+    Ngn.Free();
+    Exit:
+    krnl->FreeTable(obj, ngns_c1);
+    krnl->FreeTable(obj, ngns_c2);
 
     return true;
-}
+} // GetNextPointInFan
 
 // ----------SplitEdge_AbsDist----------------------------------------------------------------------
-LONG SplitEdge_AbsDist ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, Real ChamfRadius, Bool &tooClose) {
-    
+LONG SplitEdge_AbsDist(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, Real ChamfRadius, Bool & tooClose) {
     Vector vec1, vec2;
     Real relat_pos_in_edge, len;
 
-    chk = krnl->GetPoint ( obj, p1, &vec1);
+    chk = krnl->GetPoint(obj, p1, &vec1);
     if ( !chk) {
         return 0;
     }
-    
-    chk = krnl->GetPoint ( obj, p2, &vec2);
+
+    chk = krnl->GetPoint(obj, p2, &vec2);
     if ( !chk) {
         return 0;
     }
-    
-    len = Len ( vec2 - vec1);
+
+    len = Len(vec2 - vec1);
     relat_pos_in_edge = ChamfRadius / len;
     if ( relat_pos_in_edge >= 1) {
         tooClose = true;
     }
 
-    return ( krnl->SplitEdge ( obj, p1, p2, relat_pos_in_edge) );
+    return ( krnl->SplitEdge(obj, p1, p2, relat_pos_in_edge) );
 }
 
-LONG SplitEdge_AbsDist ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, Real ChamfRadius) {
-    
+LONG SplitEdge_AbsDist(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2, Real ChamfRadius) {
     Vector vec1, vec2;
     Real relat_pos_in_edge, len;
 
-    chk = krnl->GetPoint ( obj, p1, &vec1);
+    chk = krnl->GetPoint(obj, p1, &vec1);
     if ( !chk) {
         return 0;
     }
-    
-    chk = krnl->GetPoint ( obj, p2, &vec2);
+
+    chk = krnl->GetPoint(obj, p2, &vec2);
     if ( !chk) {
         return 0;
     }
-    
-    len = Len ( vec2 - vec1);
+
+    len = Len(vec2 - vec1);
     relat_pos_in_edge = ChamfRadius / len;
-    
-    return ( krnl->SplitEdge ( obj, p1, p2, relat_pos_in_edge) );
+
+    return ( krnl->SplitEdge(obj, p1, p2, relat_pos_in_edge) );
 }
 
 // ----------ConnectPnts----------------------------------------------------------------------
-Bool ConnectPnts ( Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2pl1, LONG pl2, LONG pl3) {
-    
+Bool ConnectPnts(Modeling * krnl, PolygonObject * obj, LONG p1, LONG p2pl1, LONG pl2, LONG pl3) {
     LONG ngn;
-    chk = GetNgnFrom3pnts ( krnl, obj, p2pl1, pl2, pl3, ngn);
+
+    chk = GetNgnFrom3pnts(krnl, obj, p2pl1, pl2, pl3, ngn);
     if ( !chk) {
         return false;
     }
-    LONG newNgn = krnl->SplitPolygon ( obj, ngn, p1, p2pl1);
+    LONG newNgn = krnl->SplitPolygon(obj, ngn, p1, p2pl1);
     if ( !newNgn) {
         return false;
     }

@@ -17,16 +17,29 @@ Installation
 Compile and install to CINEMA 4D's plugin folder  
 (or the equivalent in the user preferences folder).
 
-If you do not want to compile the plugin, you can find  
-a pre-compiled binary distribution in the downloads  
-section. 
+If you do not want to compile the plugin, you can find   
+a pre-compiled binary distribution in the downloads   
+section.
+
+Note: the downloads section unfortunately was disabled by  
+github but you can still get to it by appending `/downloads`    
+to the end of the repository URL. 
+
+Or you can try this link:  
+
+[DOWNLOADS](http://github.com/andreberg/C4D-ChamferMaker-R12/downloads "DOWNLOADS")
+
+If that doesn't work I included the ready built plugins   
+in the repository under the `dist` directory so you get   
+the repository ZIP file by clicking `Download ZIP` on   
+this page.
 
 Supported Versions
 ------------------
 
-The current version, named `AMa_ChamferMaker-R14.zip` is for R14,  
-but you can also find the previous version for R12/R13 in the downloads  
-section named `AMa_ChamferMaker.zip`.
+The current version, named `AMa_Chamfer_Maker-R14.zip` is for R14,  
+but you can also find the previous version for R12/R13 called  
+`AMa_Chamfer_Maker-R12-R13.zip`.
 
 Development
 -----------
@@ -62,7 +75,7 @@ Copyright
 ---------
 
 Copyright 2006, Antosha Marchenko  
-Copyright 2011, 2012, André Berg
+Copyright 2011, 2013, André Berg
 
 License
 -------
