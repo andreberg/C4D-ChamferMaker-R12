@@ -6,6 +6,14 @@
 #include "customgui_inexclude.h"
 #include "O_AMa_ChamferMaker.h"
 
+#if API_VERSION < 15000
+	#include "toolbevel.h"
+	#define _ID_BEVELTOOL ID_MODELING_BEVEL_TOOL
+#else
+	#include "xbeveltool.h"
+	#define _ID_BEVELTOOL 431000015
+#endif
+
 const LONG AMaPOINT_MAP_MAX_BRICKS = 50;
 
 struct AMaPointMap_struct {
@@ -604,6 +612,7 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
 
     if ( Need_C4D_Bevel) {
         BaseContainer bc;
+#if API_VERSION < 15000
         bc.SetReal(MDATA_BEVEL_OFFSET2, data->GetReal(AMa_CHMMKR_RAD_a));
         bc.SetReal(MDATA_BEVEL_VARIANCE2, data->GetReal(AMa_CHMMKR_VARIANCE));
         bc.SetLong(MDATA_BEVEL_SUBDIVISION, data->GetLong(AMa_CHMMKR_SUBDIVISION));
@@ -612,13 +621,16 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
         bc.SetData(MDATA_BEVEL_PATH, ( data->GetData(AMa_CHMMKR_PATH)));
         bc.SetReal(MDATA_BEVEL_OFFSET1, data->GetReal(AMa_CHMMKR_EXTRUSION));
         bc.SetReal(MDATA_BEVEL_VARIANCE1, data->GetReal(AMa_CHMMKR_EXTRU_VARI));
+#else
+		// TODO: Implement R15 Bevel Tool Settings
+#endif
         ModelingCommandData cd;
         cd.doc = op->GetDocument();
         cd.bc = &bc;
         cd.op = obj;
         cd.mode = MODELINGCOMMANDMODE_EDGESELECTION;
         cd.arr = NULL;
-        chk = SendModelingCommand(ID_MODELING_BEVEL_TOOL, cd);
+        chk = SendModelingCommand(_ID_BEVELTOOL, cd);
         if ( !chk) {
             return FALSE;
         }
