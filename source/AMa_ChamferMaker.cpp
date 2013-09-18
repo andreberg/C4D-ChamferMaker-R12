@@ -6,6 +6,14 @@
 #include "customgui_inexclude.h"
 #include "O_AMa_ChamferMaker.h"
 
+#if API_VERSION < 15000
+    #include "toolbevel.h"
+    #define _ID_BEVELTOOL ID_MODELING_BEVEL_TOOL
+#else
+    #include "xbeveltool.h"
+    #define _ID_BEVELTOOL 431000015
+#endif
+
 const LONG AMaPOINT_MAP_MAX_BRICKS = 50;
 
 struct AMaPointMap_struct {
@@ -604,6 +612,7 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
 
     if ( Need_C4D_Bevel) {
         BaseContainer bc;
+#if API_VERSION < 15000
         bc.SetReal(MDATA_BEVEL_OFFSET2, data->GetReal(AMa_CHMMKR_RAD_a));
         bc.SetReal(MDATA_BEVEL_VARIANCE2, data->GetReal(AMa_CHMMKR_VARIANCE));
         bc.SetLong(MDATA_BEVEL_SUBDIVISION, data->GetLong(AMa_CHMMKR_SUBDIVISION));
@@ -612,13 +621,26 @@ Bool AMaChamMaker::ModifyObj(BaseObject * mod, BaseObject * op, BaseObject * rea
         bc.SetData(MDATA_BEVEL_PATH, ( data->GetData(AMa_CHMMKR_PATH)));
         bc.SetReal(MDATA_BEVEL_OFFSET1, data->GetReal(AMa_CHMMKR_EXTRUSION));
         bc.SetReal(MDATA_BEVEL_VARIANCE1, data->GetReal(AMa_CHMMKR_EXTRU_VARI));
+#else
+        bc.SetInt32(MDATA_BEVEL_MASTER_MODE, MDATA_BEVEL_MASTER_MODE_CHAMFER);
+        bc.SetInt32(MDATA_BEVEL_OFFSET_MODE, MDATA_BEVEL_OFFSET_MODE_FIXED);
+        bc.SetFloat(MDATA_BEVEL_RADIUS, data->GetReal(AMa_CHMMKR_RAD_a));
+        bc.SetInt32(MDATA_BEVEL_SUB, data->GetLong(AMa_CHMMKR_SUBDIVISION));
+        bc.SetFloat(MDATA_BEVEL_DEPTH, 100);
+        bc.SetBool(MDATA_BEVEL_LIMIT, false);
+        bc.SetFloat(MDATA_BEVEL_EXTRUSION, data->GetReal(AMa_CHMMKR_EXTRUSION));
+        bc.SetFloat(MDATA_BEVEL_POLY_ANGLE, Rad(89.0f));
+        bc.SetBool(MDATA_BEVEL_GROUP, true);
+
+        // TODO: Finish parameter filling
+#endif
         ModelingCommandData cd;
         cd.doc = op->GetDocument();
         cd.bc = &bc;
         cd.op = obj;
         cd.mode = MODELINGCOMMANDMODE_EDGESELECTION;
         cd.arr = NULL;
-        chk = SendModelingCommand(ID_MODELING_BEVEL_TOOL, cd);
+        chk = SendModelingCommand(_ID_BEVELTOOL, cd);
         if ( !chk) {
             return FALSE;
         }
@@ -1726,7 +1748,7 @@ Bool AMaChamMaker::MakeChamf_In_AMa_PARALLEL_Mode(Bool CompositeModeOn, Bool Dou
     }     // if CloseFans || ProlongOutlines || CompositeMode
 
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // ------------------------------------------------------------------- Close Otlined Edges (fans)		/////////
+    // ------------------------------------------------------------------- Close Otlined Edges (fans)                /////////
     if ( CloseFans) {
         for ( i = 0; i < ChargedEDaCount; i++) {
             EdgeDataStruct * ed = EdgeData[indEDa[i]];
